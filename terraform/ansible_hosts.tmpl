@@ -1,0 +1,6 @@
+[master]
+${master_ip} # ${master_name}
+[workers]
+%{ for index, ip in workers_ip ~}
+${ip} # ${workers_name[index]}
+%{ endfor ~}
