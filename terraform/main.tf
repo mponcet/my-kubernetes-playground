@@ -20,12 +20,14 @@ resource "libvirt_volume" "ubuntu_cloudimg" {
 resource "libvirt_volume" "k8s_master_volume" {
   name           = "k8s-master.qcow2"
   base_volume_id = libvirt_volume.ubuntu_cloudimg.id
+  size           = var.disk_size
 }
 
 resource "libvirt_volume" "k8s_worker_volume" {
   count          = var.k8s_worker_count
   name           = "k8s-worker-${count.index+1}.qcow2"
   base_volume_id = libvirt_volume.ubuntu_cloudimg.id
+  size           = var.disk_size
 }
 
 data "template_file" "user_data_k8s_master" {
