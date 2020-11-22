@@ -9,3 +9,7 @@ variable "disk_size" {
 variable "vcpu" {
   default = 2
 }
+
+variable "memory" {
+  default = 1024
+}
