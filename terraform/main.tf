@@ -66,7 +66,7 @@ resource "libvirt_cloudinit_disk" "k8s_worker_cloud_init" {
 resource "libvirt_domain" "k8s_master" {
   name   = "k8s-master"
   vcpu   = var.vcpu
-  memory = var.memory
+  memory = var.memory_master
 
   cloudinit = libvirt_cloudinit_disk.k8s_master_cloud_init.id
 
@@ -91,7 +91,7 @@ resource "libvirt_domain" "k8s_worker" {
   count  = var.k8s_worker_count
   name   = "k8s-worker-${count.index + 1}"
   vcpu   = var.vcpu
-  memory = var.memory
+  memory = var.memory_worker
 
   cloudinit = libvirt_cloudinit_disk.k8s_worker_cloud_init[count.index].id
 

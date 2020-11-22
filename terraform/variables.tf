@@ -10,6 +10,10 @@ variable "vcpu" {
   default = 2
 }
 
-variable "memory" {
+variable "memory_master" {
+  default = 2048
+}
+
+variable "memory_worker" {
   default = 1024
 }
