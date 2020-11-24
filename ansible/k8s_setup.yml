@@ -1,0 +1,14 @@
+- hosts: all
+  become: true
+  roles:
+    - common
+
+- hosts: master
+  become: true
+  roles:
+    - k8s_master
+
+- hosts: workers
+  become: true
+  roles:
+    - k8s_worker
