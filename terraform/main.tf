@@ -63,6 +63,20 @@ resource "libvirt_cloudinit_disk" "k8s_worker_cloud_init" {
   pool           = "default"
 }
 
+resource "libvirt_network" "k8s_network" {
+  name = "k8snet"
+
+  mode = "nat"
+
+  domain = "k8s.local"
+  addresses = [ "10.20.30.0/24" ] # "2001:db8:ca2:2::1/64" ]
+
+  dns {
+    enabled = true
+    local_only = true
+  }
+}
+
 resource "libvirt_domain" "k8s_master" {
   name   = "k8s-master"
   vcpu   = var.vcpu
@@ -71,8 +85,8 @@ resource "libvirt_domain" "k8s_master" {
   cloudinit = libvirt_cloudinit_disk.k8s_master_cloud_init.id
 
   network_interface {
-    network_name   = "default"
-    hostname       = "k8s-master.local"
+    network_id = libvirt_network.k8s_network.id
+    hostname       = "k8s-master"
     wait_for_lease = true
   }
 
@@ -96,7 +110,7 @@ resource "libvirt_domain" "k8s_worker" {
   cloudinit = libvirt_cloudinit_disk.k8s_worker_cloud_init[count.index].id
 
   network_interface {
-    network_name   = "default"
+    network_id = libvirt_network.k8s_network.id
     hostname       = "k8s-worker-${count.index+1}.local"
     wait_for_lease = true
   }
